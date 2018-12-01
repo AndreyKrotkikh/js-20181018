@@ -2,6 +2,7 @@
 
 import PhoneCatalog from './phone-catalog.js';
 import PhoneViewer from './phone-viewer.js';
+import ShoppingCart from './shopping-cart.js';
 
 import PhoneService from '../services/phone-service.js';
 
@@ -11,23 +12,55 @@ export default class PhonesPage {
 
     this._render();
 
+    this._initCatalog();
     this._initViewer();
+    this._initCart();
 
+    PhoneService.getPhones((phones) => {
+      this._catalog.showPhones(phones);
+    });
+  }
+
+  _initCatalog() {
     this._catalog = new PhoneCatalog({
       element: this._element.querySelector('[data-component="phone-catalog"]'),
-      phones: PhoneService.getPhones(),
-      onPhoneSelected: (phoneId) => {
-        let phone = PhoneService.getPhone(phoneId);
+    });
 
+    this._catalog.on('phoneSelected', (event) => {
+      PhoneService.getPhone(event.detail.phoneId, (phone) => {
         this._catalog.hide();
         this._viewer.showPhone(phone);
-      },
+      });
     })
+
+    this._catalog.on('add', event => {
+      let phoneId = event.detail;
+      this._cart.addItem(phoneId)
+    })
+      // onPhoneSelected: (phoneId) => {
+      //   let phone = PhoneService.getPhone(phoneId);
+      //
+      //   this._catalog.hide();
+      //   this._viewer.showPhone(phone);
+      // },
+
   }
 
   _initViewer() {
     this._viewer = new PhoneViewer({
       element: this._element.querySelector('[data-component="phone-viewer"]'),
+    })
+
+    this._viewer.on('back', () => {
+      this._viewer.hide();
+      this._catalog.show();
+    })
+
+  }
+
+  _initCart() {
+    this._cart = new ShoppingCart({
+      element: this._element.querySelector('[data-component="shopping-cart"]')
     })
   }
 
@@ -52,18 +85,13 @@ export default class PhonesPage {
             </section>
 
             <section>
-                <p>Shopping Cart</p>
-                <ul>
-                    <li>Phone 1</li>
-                    <li>Phone 2</li>
-                    <li>Phone 3</li>
-                </ul>
+                <div data-component="shopping-cart"></div>
             </section>
         </div>
 
         <!--Main content-->
         <div class="col-md-10">
-           <div data-component="phone-catalog"></div>
+           <div data-component="phone-catalog" class="js-hidden"></div>
            <div data-component="phone-viewer" class="js-hidden"></div>
         </div>
     </div>
