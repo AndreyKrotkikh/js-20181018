@@ -11,7 +11,7 @@ export default class PhoneCatalog extends Component {
     this.on('click', '[data-element="phone-link"]', event => this._onPhoneClick(event));
     this.on('click', '[data-element="button-add"]', event => {
       let phoneItem = event.delegateTarget.closest('li');
-
+      console.log(phoneItem.dataset.phoneId);
       this._trigger('add', phoneItem.dataset.phoneId);
     });
   }

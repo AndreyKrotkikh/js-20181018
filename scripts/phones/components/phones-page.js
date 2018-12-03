@@ -3,7 +3,6 @@
 import PhoneCatalog from './phone-catalog.js';
 import PhoneViewer from './phone-viewer.js';
 import ShoppingCart from './shopping-cart.js';
-
 import PhoneService from '../services/phone-service.js';
 
 export default class PhonesPage {
@@ -37,6 +36,7 @@ export default class PhonesPage {
       let phoneId = event.detail;
       this._cart.addItem(phoneId)
     })
+
       // onPhoneSelected: (phoneId) => {
       //   let phone = PhoneService.getPhone(phoneId);
       //
@@ -55,6 +55,12 @@ export default class PhonesPage {
       this._viewer.hide();
       this._catalog.show();
     })
+
+    this._viewer.on('add', event => {
+        let phoneId = event.detail;
+        this._cart.addItem(phoneId)
+    })
+
 
   }
 
