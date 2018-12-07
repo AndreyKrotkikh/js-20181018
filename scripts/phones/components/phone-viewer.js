@@ -33,6 +33,7 @@ export default class PhoneViewer extends Component {
 
   showPhone(phone) {
     this._phone = phone;
+    this._imgSrc = null;
     this._render();
 
     super.show();
