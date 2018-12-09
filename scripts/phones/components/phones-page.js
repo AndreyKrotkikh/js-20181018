@@ -4,6 +4,8 @@ import PhoneCatalog from './phone-catalog.js';
 import PhoneViewer from './phone-viewer.js';
 import ShoppingCart from './shopping-cart.js';
 import PhoneService from '../services/phone-service.js';
+import SortingMenu from './sorting-service.js';
+import SearchingMenu from './searching-service.js';
 
 export default class PhonesPage {
   constructor({ element }) {
@@ -14,6 +16,8 @@ export default class PhonesPage {
     this._initCatalog();
     this._initViewer();
     this._initCart();
+    this._initSortingMenu();
+    this._initSearchingMenu();
 
     PhoneService.getPhones((phones) => {
       this._catalog.showPhones(phones);
@@ -70,24 +74,27 @@ export default class PhonesPage {
     })
   }
 
-  _render() {
+  _initSortingMenu() {
+      this._cart = new SortingMenu({
+          element: this._element.querySelector('[data-component="sorting-menu"]')
+      })
+  }
+
+  _initSearchingMenu() {
+     this._cart = new SearchingMenu({
+         element: this._element.querySelector('[data-component="searching-menu"]')
+     })
+  }
+
+    _render() {
     this._element.innerHTML = `
        <div class="row">
         <!--Sidebar-->
         <div class="col-md-2">
             <section>
-                <p>
-                    Search:
-                    <input>
-                </p>
+                <div data-component="searching-menu"></div>
 
-                <p>
-                    Sort by:
-                    <select>
-                        <option value="name">Alphabetical</option>
-                        <option value="age">Newest</option>
-                    </select>
-                </p>
+                <div data-component="sorting-menu"></div>
             </section>
 
             <section>
