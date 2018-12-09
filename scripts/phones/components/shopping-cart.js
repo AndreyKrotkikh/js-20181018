@@ -6,7 +6,6 @@ export default class ShoppingCart extends Component {
 
     this._element = element;
 
-    // this._items = [];
     this._items = {};
 
     this._render();
@@ -16,7 +15,7 @@ export default class ShoppingCart extends Component {
     })
   }
 
-  addItem(item) {
+  addItemToBasket(item) {
     if (!this._items[item]) {
       this._items[item] = 0;
     }

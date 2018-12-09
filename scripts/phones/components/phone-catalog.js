@@ -4,10 +4,6 @@ export default class PhoneCatalog extends Component {
   constructor({ element }) {
     super({ element });
 
-    // this._phones = phones;
-    //
-    // this._render();
-
     this.on('click', '[data-element="phone-link"]', event => this._onPhoneClick(event));
     this.on('click', '[data-element="button-add"]', event => {
       let phoneItem = event.delegateTarget.closest('li');

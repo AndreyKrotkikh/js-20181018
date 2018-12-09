@@ -8,13 +8,19 @@ export default class SortingMenu extends Component {
 
         this._render();
 
+        this.on('change','data-element="sorting-menu"', (event) => {
+            let sortingStatus = event.delegateTarget;
+            console.log(sortingStatus.value);
+            this._trigger('changeSort');
+        })
+
     }
 
     _render() {
         this._element.innerHTML = `
         <p>
            Sort by:
-           <select>
+           <select data-element="sorting-menu">
              <option value="name">Alphabetical</option>
              <option value="age">Newest</option>
            </select>
