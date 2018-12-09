@@ -4,8 +4,8 @@ export default class PhoneCatalog extends Component {
   constructor({ element }) {
     super({ element });
 
-    this.on('click', '[data-element="phone-link"]', event => this._onPhoneClick(event));
-    this.on('click', '[data-element="button-add"]', event => {
+    this.on('click', '[data-element="phone-link"]', (event) => this._onPhoneClick(event));
+    this.on('click', '[data-element="button-add"]', (event) => {
       let phoneItem = event.delegateTarget.closest('li');
       console.log(phoneItem.dataset.phoneId);
       this._trigger('add', phoneItem.dataset.phoneId);
@@ -21,6 +21,32 @@ export default class PhoneCatalog extends Component {
     this._phones = phones;
     this._render();
     this.show();
+  }
+
+  sortCatalog(sortDetail) {
+      // this._phones = phones;
+
+      function ageComparison (a,b) {
+        if (+a[sortDetail] > +b[sortDetail]) return 1;
+        if (+a[sortDetail] < +b[sortDetail]) return -1;
+      }
+
+      function nameComparison (a,b) {
+          if (a[sortDetail] > b[sortDetail]) return 1;
+          if (a[sortDetail] < b[sortDetail]) return -1;
+      }
+
+      console.log(sortDetail);
+      if (sortDetail === "age") {
+        this._phones.sort(ageComparison);
+        console.log(0);
+      }
+
+      if (sortDetail === "name") {
+          this._phones.sort(nameComparison);
+          console.log(1);
+      }
+      this._render();
   }
 
 

@@ -15,18 +15,24 @@ export default class PhonesPage {
     this._initCart();
     this._initCatalog();
     this._initViewer();
-
     this._initSortingMenu();
     this._initSearchingMenu();
+
+    //console.log(this._cart);
+    console.log(this._search);
+    console.log(this._sort);
+
 
     PhoneService.getPhones((phones) => {
       this._catalog.showPhones(phones);
     });
+    // console.log(this._catalog);
+    // console.log(this._catalog.showPhones());
   }
 
   _initCatalog() {
     this._catalog = new PhoneCatalog({
-      element: this._element.querySelector('[data-component="phone-catalog"]'),
+      element: this._element.querySelector('[data-component="phone-catalog"]')
     });
 
     this._catalog.on('phoneSelected', (event) => {
@@ -36,7 +42,7 @@ export default class PhonesPage {
       });
     });
 
-    this._catalog.on('add', event => {
+    this._catalog.on('add', (event) => {
       let phoneId = event.detail;
       this._cart.addItemToBasket(phoneId);
     })
@@ -52,7 +58,7 @@ export default class PhonesPage {
 
   _initViewer() {
     this._viewer = new PhoneViewer({
-      element: this._element.querySelector('[data-component="phone-viewer"]'),
+      element: this._element.querySelector('[data-component="phone-viewer"]')
     });
 
     this._viewer.on('back', () => {
@@ -60,7 +66,7 @@ export default class PhonesPage {
       this._catalog.show();
     });
 
-    this._viewer.on('add', event => {
+    this._viewer.on('add', (event) => {
         let phoneId = event.detail;
         this._cart.addItemToBasket(phoneId);
     })
@@ -75,14 +81,18 @@ export default class PhonesPage {
   }
 
   _initSortingMenu() {
-      this._cart = new SortingMenu({
-          element: this._element.querySelector('[data-component="sorting-menu"]')
+      this._sort = new SortingMenu({
+          element: this._element.querySelector('[data-component="sorting"]')
       })
+
+      this._sort.on('changeSort', (event) => {
+          this._catalog.sortCatalog(event.detail.valueInfo);
+      });
   }
 
   _initSearchingMenu() {
-     this._cart = new SearchingMenu({
-         element: this._element.querySelector('[data-component="searching-menu"]')
+     this._search = new SearchingMenu({
+         element: this._element.querySelector('[data-component="searching"]')
      })
   }
 
@@ -92,9 +102,9 @@ export default class PhonesPage {
         <!--Sidebar-->
         <div class="col-md-2">
             <section>
-                <div data-component="searching-menu"></div>
+                <div data-component="searching"></div>
 
-                <div data-component="sorting-menu"></div>
+                <div data-component="sorting"></div>
             </section>
 
             <section>

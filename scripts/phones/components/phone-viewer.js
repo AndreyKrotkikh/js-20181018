@@ -5,25 +5,16 @@ export default class PhoneViewer extends Component {
     super({ element });
 
     this.on('click','[data-element="button-back"]', (event) => {
-      // let backButton = event.target.closest('[data-element="button-back"]')
-      // if (!backButton) return;
       let backButton = event.delegateTarget;
-
-      // let customEvent = new CustomEvent('back');
-      // this._element.dispatchEvent(customEvent);
       this._trigger('back')
     })
 
     this.on('click','[data-element="button-basket"]', (event) => {
-        // let basketButton = event.target.closest('[data-element="button-basket"]')
-        // if (!basketButton) return;
         let basketButton = event.delegateTarget;
         this._trigger('add',this._phone.id);
     });
 
     this.on('click','[data-element="thumbs"]', event => {
-        // let thumbsClick = event.target.closest('[data-element="thumbs"]')
-        // if (!thumbsClick) return;
         let thumbsClick = event.delegateTarget;
         this._imgSrc = thumbsClick.getAttribute('src');
         this._render();
