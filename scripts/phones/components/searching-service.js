@@ -8,14 +8,33 @@ export default class SearchingMenu extends Component {
 
         this._render();
 
+        this.on('input'/*'change'*/,'[data-element="searching-input"]', (event) => {
+            let searchingInfo = event.delegateTarget;
+            debounceSearching(this._trigger('changeSearch',{searchInfo: searchingInfo.value}),200);
+        })
+
     }
 
     _render() {
         this._element.innerHTML = `
             <p>        
                 Search:
-                <input>
+                <input data-element="searching-input">
             </p>       
     `;
+    }
+
+}
+
+function debounceSearching(f, ms) {
+    let timerId = null;
+    return function(...args) {
+
+        let context = this;
+        clearTimeout(timerId);
+        timerId = setTimeout(function() {
+            f.apply(context, args);
+        }, ms);
+
     }
 }

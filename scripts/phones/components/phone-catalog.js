@@ -7,7 +7,6 @@ export default class PhoneCatalog extends Component {
     this.on('click', '[data-element="phone-link"]', (event) => this._onPhoneClick(event));
     this.on('click', '[data-element="button-add"]', (event) => {
       let phoneItem = event.delegateTarget.closest('li');
-      console.log(phoneItem.dataset.phoneId);
       this._trigger('add', phoneItem.dataset.phoneId);
     });
   }
@@ -36,24 +35,33 @@ export default class PhoneCatalog extends Component {
           if (a[sortDetail] < b[sortDetail]) return -1;
       }
 
-      console.log(sortDetail);
       if (sortDetail === "age") {
         this._phones.sort(ageComparison);
-        console.log(0);
       }
 
       if (sortDetail === "name") {
           this._phones.sort(nameComparison);
-          console.log(1);
       }
       this._render();
   }
 
+  searchCatalog(searchDetail) {
+      if (searchDetail.length) {
+      this._filteredPhones = this._phones.filter(
+          function (string) {
+              return string.name.toLowerCase().includes(searchDetail.toLowerCase());
+          }
+      ) } else {
+        this._filteredPhones = null;
+      }
+      console.log(this._filteredPhones);
+      this._render();
+  }
 
   _render() {
     this._element.innerHTML = `
        <ul class="phones">
-          ${ this._phones.map(phone => `
+          ${(this._filteredPhones || this._phones).map(phone => `
             <li class="thumbnail" data-phone-id="${phone.id}">
               <a data-element="phone-link" data-phone-id="${phone.id}" href="#!/phones/${phone.id}" class="thumb">
                   <img alt="${phone.name}" src="${phone.imageUrl}">

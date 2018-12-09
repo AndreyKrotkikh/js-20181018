@@ -10,7 +10,6 @@ export default class SortingMenu extends Component {
 
         this.on('change','[data-element="sorting-menu"]', (event) => {
             let sortingInfo = event.delegateTarget;
-            console.log(sortingInfo.value);
             this._trigger('changeSort',{valueInfo: sortingInfo.value});
         })
 

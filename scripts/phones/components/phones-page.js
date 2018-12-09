@@ -18,16 +18,9 @@ export default class PhonesPage {
     this._initSortingMenu();
     this._initSearchingMenu();
 
-    //console.log(this._cart);
-    console.log(this._search);
-    console.log(this._sort);
-
-
     PhoneService.getPhones((phones) => {
       this._catalog.showPhones(phones);
     });
-    // console.log(this._catalog);
-    // console.log(this._catalog.showPhones());
   }
 
   _initCatalog() {
@@ -46,13 +39,6 @@ export default class PhonesPage {
       let phoneId = event.detail;
       this._cart.addItemToBasket(phoneId);
     })
-
-      // onPhoneSelected: (phoneId) => {
-      //   let phone = PhoneService.getPhone(phoneId);
-      //
-      //   this._catalog.hide();
-      //   this._viewer.showPhone(phone);
-      // },
 
   }
 
@@ -94,6 +80,10 @@ export default class PhonesPage {
      this._search = new SearchingMenu({
          element: this._element.querySelector('[data-component="searching"]')
      })
+      
+     this._search.on('changeSearch', (event) => {
+         this._catalog.searchCatalog(event.detail.searchInfo);
+     });
   }
 
     _render() {
